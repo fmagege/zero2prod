@@ -1,9 +1,19 @@
+use std::net::TcpListener;
+use zero2prod::configuration::get_configuration;
+use zero2prod::startup::run;
+
 #[tokio::main]
 async fn main() -> Result<(), std::io::Error> {
     std::env::set_var("RUST_LOG", "info, actix_web=debug, actix_server=debug");
     env_logger::init();
 
-    let listener = std::net::TcpListener::bind("0.0.0.0:8000").expect("Failed to bind port");
-
-    zero2prod::run(listener)?.await
+    let configuration = get_configuration().expect("Failed to read configuration.");
+    let address = format!("0.0.0.0:{}", configuration.application_port);
+    let listener = TcpListener::bind(address).expect("Failed to bind port");
+    run(listener)?.await
 }
+
+// let connection_pool = zero2prod::db::get_connection_pool(&configuration.database)
+//     .await
+//     .expect("Failed to connect to Postgres.");
+// let connection_pool = zero2prod::db::get_connection_pool(&configuration.database)
