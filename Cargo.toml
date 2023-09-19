@@ -15,8 +15,22 @@ name = "zero2prod"
 actix-web = "4.4.0"
 env_logger = "0.10.0"
 log = "0.4.20"
+serde = { version = "1.0", features = ["derive"] }
 #tokio = { version = "1.32.0", features = ["full"] }
 tokio = { version = "1.32.0", features = ["macros", "rt-multi-thread"] }
+
+# Using table-like toml syntax to avoid a super-long line!
+[dependencies.sqlx]
+version = "0.7"
+default-features = false
+features = [
+    "runtime-tokio-rustls", 
+    "macros", 
+    "postgres", 
+    "uuid", 
+    "chrono", 
+    "migrate"
+]
 
 [dev-dependencies]
 reqwest = "0.11.20"
