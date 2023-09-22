@@ -60,8 +60,3 @@ pub async fn configure_database(config: &DatabaseSettings) -> PgPool {
 
     connection_pool
 }
-
-// let db_pool = configure_database().await?;
-// let server = run(db_pool.clone()).await?;
-// let _ = tokio::spawn(server);
-// Ok(db_pool)
