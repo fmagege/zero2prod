@@ -4,14 +4,6 @@ use serde::Deserialize;
 pub struct Settings {
     pub database: DatabaseSettings,
     pub application_port: u16,
-    // pub email_client: EmailClientSettings,
-    // pub email_client_base_url: String,
-    // pub redis: RedisSettings,
-    // pub web_app_base_url: String,
-    // pub web_app_url_path: String,
-    // pub allowed_origins: String,
-    // pub jwt_secret: String,
-    // pub jwt_expiry_days: u32,
 }
 
 #[derive(Debug, Deserialize)]
@@ -21,6 +13,22 @@ pub struct DatabaseSettings {
     pub host: String,
     pub port: u16,
     pub db_name: String,
+}
+
+impl DatabaseSettings {
+    pub fn connection_string(&self) -> String {
+        format!(
+            "postgres://{}:{}@{}:{}/{}",
+            self.username, self.password, self.host, self.port, self.db_name
+        )
+    }
+
+    pub fn connection_string_without_db(&self) -> String {
+        format!(
+            "postgres://{}:{}@{}:{}",
+            self.username, self.password, self.host, self.port
+        )
+    }
 }
 
 #[derive(Debug, Deserialize)]
